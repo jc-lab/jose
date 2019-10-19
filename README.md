@@ -5,7 +5,6 @@
 > "JSON Web Almost Everything" - JWA, JWS, JWE, JWT, JWK, JWKS for Node.js with minimal dependencies
 
 <p align="center"><img src="/img/demo.gif?raw=true"/></p>
-
 ## Implemented specs & features
 
 The following specifications are implemented by `jose`
@@ -326,6 +325,52 @@ standard Node.js OpenSSL. The following is disabled in Electron runtime because 
   `ECDH-ES+A256KW`, `PBES2-HS256+A128KW`, `PBES2-HS384+A192KW`, `PBES2-HS512+A256KW`)
 - OKP curves `Ed448`, `X25519` and `X448` are not supported
 - EC curve `secp256k1` is not supported
+
+#### Customized sign and verify support
+
+You can implement CustomKey in order to JWT signing via KMS like Google Cloud KMS.
+
+```javascript
+const { JWT, JWK, KeyObject } = require('jose')
+
+class CustomKey extends JWK.CustomKey {
+  constructor () {
+    super({ alg: 'EC', use: 'sig', kid: '12345678', ops: ['sign', 'verify'], keyType: 'private' })
+  }
+
+  toPEM (priv, encoding) {
+    return undefined
+  }
+
+  algorithms (operation) {
+    return new Set(['ES256'])
+  }
+
+  sign (alg, buffer) {
+    console.log('sign invoked: ', alg)
+    return 'BASE_64_ENCODED_SIGNATURE'
+  }
+
+  verify (alg, buffer) {
+    console.log('verify invoked: ', alg)
+    return true
+  }
+}
+
+const customKey = new CustomKey()
+
+const encoded = JWT.sign({}, customKey, {
+  expiresIn: '600s'
+})
+
+console.log('encoded : ', encoded)
+
+const decoded = JWT.verify(encoded, customKey)
+
+console.log('decoded : ', decoded)
+```
+
+
 
 ## FAQ
 

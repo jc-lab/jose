@@ -1,5 +1,5 @@
 {
-  "name": "jose",
+  "name": "@jc-lab/jose",
   "version": "1.10.1",
   "description": "JSON Web Almost Everything - JWA, JWS, JWE, JWK, JWT, JWKS for Node.js with minimal dependencies",
   "keywords": [
@@ -27,10 +27,13 @@
     "validate",
     "verify"
   ],
-  "homepage": "https://github.com/panva/jose",
-  "repository": "panva/jose",
+  "homepage": "https://github.com/jc-lab/jose",
+  "repository": "jc-lab/jose",
   "license": "MIT",
   "author": "Filip Skokan <panva.ip@gmail.com>",
+  "contributors": [
+    "Joseph Lee <development@jc-lab.net>"
+  ],
   "files": [
     "lib",
     "LICENSE_THIRD_PARTY",
